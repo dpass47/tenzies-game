@@ -106,6 +106,7 @@ function App() {
 		if (rollCount === 0) {
 			if (userLocalTime === null) {
 				localStorage.setItem('bestTime', '0.00');
+				return userLocalTime.toFixed(2);
 			} else {
 				if (userTime > userLocalTime) {
 					return userTime.toFixed(2);
