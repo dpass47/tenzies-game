@@ -81,8 +81,8 @@ function App() {
 		if (tenzies) {
 			setTenzies(false);
 			setDice(allNewDice());
-			setUserTime(0);
-			setRollCount(0);
+			setUserTime(Date.now());
+			setRollCount(1);
 		} else {
 			setDice((prevDice) =>
 				prevDice.map((die) => {
@@ -145,6 +145,7 @@ function App() {
 						{rollCount === 0
 							? 'Freezing Die and Timer will start on the first roll.'
 							: ''}
+						{tenzies ? 'Timer will start when new game is started' : ''}
 					</p>
 				</div>
 

@@ -119,11 +119,11 @@ body {
 
 .button-instructions--text {
 	font-family: 'Inter', sans-serif;
-	color: gray;
+	color: #5035ff;
 	font-weight: 400;
 	margin-top: 0;
 	max-width: 400px;
-	font-weight: 400;
+	font-weight: 800;
 	margin: 0;
 	font-size: 0.9rem;
 	margin-top: 0.75em;
