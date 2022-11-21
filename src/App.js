@@ -12,7 +12,7 @@ function App() {
 
 	const [userTime, setUserTime] = useState(0);
 
-	const userLocalTime = localStorage.getItem('bestTime');
+	const userLocalTime = JSON.parse(localStorage.getItem('bestTime'));
 
 	useEffect(() => {
 		const allHeld = dice.every((die) => die.isHeld);
@@ -33,8 +33,11 @@ function App() {
 
 	useEffect(() => {
 		if (tenzies) {
-			const userStats = userLocalTime === null ? 10000 : userLocalTime;
-			if (userStats >= userTime) {
+			if (userLocalTime === 0.0) {
+				localStorage.clear();
+				localStorage.setItem('bestTime', userTime.toFixed(2));
+			}
+			if (userLocalTime >= userTime) {
 				localStorage.clear();
 				localStorage.setItem('bestTime', userTime.toFixed(2));
 			}
@@ -58,11 +61,14 @@ function App() {
 	}
 
 	function holdDice(id) {
-		setDice((prevDice) =>
-			prevDice.map((die) => {
-				return die.id === id ? { ...die, isHeld: !die.isHeld } : { ...die };
-			})
-		);
+		if (rollCount === 0) {
+		} else {
+			setDice((prevDice) =>
+				prevDice.map((die) => {
+					return die.id === id ? { ...die, isHeld: !die.isHeld } : { ...die };
+				})
+			);
+		}
 	}
 
 	function rollDice() {
@@ -91,39 +97,81 @@ function App() {
 			key={die.id}
 			value={die.value}
 			isHeld={die.isHeld}
+			rollCount={rollCount}
 			holdDice={() => holdDice(die.id)}
 		/>
 	));
 
+	function bestTime() {
+		if (rollCount === 0) {
+			if (userLocalTime === null) {
+				localStorage.setItem('bestTime', '0.00');
+			} else {
+				if (userTime > userLocalTime) {
+					return userTime.toFixed(2);
+				} else if (userLocalTime > userTime) {
+					return userLocalTime.toFixed(2);
+				} else {
+					return userLocalTime.toFixed(2);
+				}
+			}
+		} else if (tenzies) {
+			if (userLocalTime === 0) {
+				return userTime.toFixed(2);
+			} else {
+				if (userLocalTime > userTime) {
+					return userTime.toFixed(2);
+				} else if (userLocalTime < userTime) {
+					return userLocalTime.toFixed(2);
+				}
+			}
+		} else {
+			return userLocalTime.toFixed(2);
+		}
+	}
+
 	return (
 		<main className="App">
-			{tenzies && <Confetti />}
-			<h1 className="title">Tenzies</h1>
-			<p className="instructions">
-				Roll until all dice are the same. Click each die to freeze it at its
-				current value between rolls.
-			</p>
-			<div className="dice-container">{diceElements}</div>
-			{tenzies && (
-				<div className="results-container">
-					<p className="instructions">Time: {userTime.toFixed(2)} seconds</p>
-
+			<div className="container">
+				{tenzies && <Confetti />}
+				<h1 className="title">Tenzies</h1>
+				<div className="instruction-container">
 					<p className="instructions">
-						Best Time:{' '}
-						{userLocalTime === null
-							? userTime.toFixed(2)
-							: userLocalTime < userTime
-							? userLocalTime
-							: userTime.toFixed(2)}{' '}
-						seconds
+						Roll until all dice are the same. Click each die to freeze it at its
+						current value between rolls.
 					</p>
-
-					<p className="instructions">Rolls Taken: {rollCount}</p>
+					<p className="button-instructions--text">
+						{rollCount === 0
+							? 'Freezing Die and Timer will start on the first roll.'
+							: ''}
+					</p>
 				</div>
-			)}
-			<button className="new-dice-btn" onClick={rollDice}>
-				{tenzies ? 'New Game' : 'Roll'}
-			</button>
+
+				<div className="dice-container">{diceElements}</div>
+				<button className="new-dice-btn" onClick={rollDice}>
+					{tenzies ? 'New Game' : 'Roll'}
+				</button>
+			</div>
+			<div className="results-container">
+				<p className="best-time">
+					<span className="accent">Best Time:</span> {bestTime()}
+					{''} seconds
+				</p>
+				{userLocalTime === 0.0 && userTime === 0
+					? 'Please play a game to get a best time'
+					: ''}
+				{tenzies && (
+					<div className="user-results">
+						<p className="user-results--after">
+							<span className="accent">Time: </span> {userTime.toFixed(2) + ' '}
+							seconds
+						</p>
+						<p className="user-results--after">
+							<span className="accent">Rolls Taken: </span> {rollCount}
+						</p>
+					</div>
+				)}
+			</div>
 		</main>
 	);
 }
