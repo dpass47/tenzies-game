@@ -1,3 +1,5 @@
+/* Copyright (c) 2024 Dante Passalacqua */
+
 import React, { useEffect, useState } from 'react';
 import Die from './Components/Die';
 import { nanoid } from 'nanoid';
@@ -65,7 +67,9 @@ function App() {
 		} else {
 			setDice((prevDice) =>
 				prevDice.map((die) => {
-					return die.id === id ? { ...die, isHeld: !die.isHeld } : { ...die };
+					return die.id === id
+						? { ...die, isHeld: !die.isHeld }
+						: { ...die };
 				})
 			);
 		}
@@ -138,14 +142,16 @@ function App() {
 				<h1 className="title">Tenzies</h1>
 				<div className="instruction-container">
 					<p className="instructions">
-						Roll until all dice are the same. Click each die to freeze it at its
-						current value between rolls.
+						Roll until all dice are the same. Click each die to
+						freeze it at its current value between rolls.
 					</p>
 					<p className="button-instructions--text">
 						{rollCount === 0
 							? 'Freezing Die and Timer will start on the first roll.'
 							: ''}
-						{tenzies ? 'Timer will start when new game is started' : ''}
+						{tenzies
+							? 'Timer will start when new game is started'
+							: ''}
 					</p>
 				</div>
 
@@ -165,11 +171,13 @@ function App() {
 				{tenzies && (
 					<div className="user-results">
 						<p className="user-results--after">
-							<span className="accent">Time: </span> {userTime.toFixed(2) + ' '}
+							<span className="accent">Time: </span>{' '}
+							{userTime.toFixed(2) + ' '}
 							seconds
 						</p>
 						<p className="user-results--after">
-							<span className="accent">Rolls Taken: </span> {rollCount}
+							<span className="accent">Rolls Taken: </span>{' '}
+							{rollCount}
 						</p>
 					</div>
 				)}

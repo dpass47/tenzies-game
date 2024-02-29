@@ -1,3 +1,5 @@
+/* Copyright (c) 2024 Dante Passalacqua */
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './style.css';

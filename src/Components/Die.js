@@ -1,7 +1,8 @@
+/* Copyright (c) 2024 Dante Passalacqua */
+
 import React from 'react';
 
 function Die(props) {
-	console.log(props.rollCount);
 	const styles = {
 		backgroundColor: props.isHeld ? '#59E391' : 'white',
 		cursor: props.rollCount === 0 ? 'not-allowed' : 'pointer',
